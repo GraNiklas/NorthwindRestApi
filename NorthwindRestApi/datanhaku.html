@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Customers</title>
+</head>
+<body>
+
+<div style="margin-left:20%">
+    <h1>Customers</h1>
+    <div id="sisältö"></div>
+
+</div>
+
+
+    <script>
+        document.getElementById('sisältö').innerHTML = `<h4>Ladataan...</h4>`
+
+        let x = "<table><thead><th>Company name </th><th>Country</th></thead><tbody>"
+
+        fetch('https://localhost:7270/api/customers')
+            .then(jsonResponse => jsonResponse.json())
+            .then(oliot => oliot.map(cust => {
+                x += `<tr><td>${cust.companyName}</td><td>${cust.country}</td></tr>`
+            }))
+
+        setTimeout(() => {
+            x += `</tbody></table>`
+            document.getElementById('sisältö').innerHTML = x
+        
+        },10)
+    </script>
+</body>
+
+
+</html>

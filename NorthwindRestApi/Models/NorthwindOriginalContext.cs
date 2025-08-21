@@ -29,6 +29,8 @@ public partial class NorthwindOriginalContext : DbContext
 
     public virtual DbSet<CustomerDemographic> CustomerDemographics { get; set; }
 
+    public virtual DbSet<Documentation> Documentations { get; set; }
+
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Invoice> Invoices { get; set; }
@@ -77,9 +79,7 @@ public partial class NorthwindOriginalContext : DbContext
 
     public virtual DbSet<Territory> Territories { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=URSULA;Database=NorthwindOriginal;TrustServerCertificate=True;Trusted_Connection=True;");
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -204,6 +204,24 @@ public partial class NorthwindOriginalContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("CustomerTypeID");
             entity.Property(e => e.CustomerDesc).HasColumnType("ntext");
+        });
+
+        modelBuilder.Entity<Documentation>(entity =>
+        {
+            entity.ToTable("Documentation");
+
+            entity.Property(e => e.DocumentationId)
+                .ValueGeneratedNever()
+                .HasColumnName("DocumentationID");
+            entity.Property(e => e.AvailableRoute)
+                .HasMaxLength(200)
+                .IsFixedLength();
+            entity.Property(e => e.Description)
+                .HasMaxLength(2000)
+                .IsFixedLength();
+            entity.Property(e => e.Method)
+                .HasMaxLength(20)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<Employee>(entity =>
@@ -663,6 +681,25 @@ public partial class NorthwindOriginalContext : DbContext
                 .HasForeignKey(d => d.RegionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Territories_Region");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.Property(e => e.Email)
+                .HasMaxLength(30)
+                .IsFixedLength();
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(30)
+                .IsFixedLength();
+            entity.Property(e => e.LastName)
+                .HasMaxLength(30)
+                .IsFixedLength();
+            entity.Property(e => e.Password)
+                .HasMaxLength(200)
+                .IsFixedLength();
+            entity.Property(e => e.Username)
+                .HasMaxLength(10)
+                .IsFixedLength();
         });
 
         OnModelCreatingPartial(modelBuilder);
