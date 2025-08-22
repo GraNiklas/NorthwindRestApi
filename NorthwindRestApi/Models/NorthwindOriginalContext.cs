@@ -81,6 +81,12 @@ public partial class NorthwindOriginalContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+
+    }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AlphabeticalListOfProduct>(entity =>
@@ -685,21 +691,11 @@ public partial class NorthwindOriginalContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.Property(e => e.Email)
-                .HasMaxLength(30)
-                .IsFixedLength();
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(30)
-                .IsFixedLength();
-            entity.Property(e => e.LastName)
-                .HasMaxLength(30)
-                .IsFixedLength();
-            entity.Property(e => e.Password)
-                .HasMaxLength(200)
-                .IsFixedLength();
-            entity.Property(e => e.Username)
-                .HasMaxLength(10)
-                .IsFixedLength();
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(200);
+            entity.Property(e => e.Username).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
